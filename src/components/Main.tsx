@@ -48,7 +48,7 @@ const Main: React.FC<{ stageRef: React.RefObject<Konva.Stage>; glasses: string[]
 							<Layer draggable={true}>
 								{selectedGlasses &&
 									<ImageObject
-										src={`/src/assets/glasses/${selectedGlasses}.png`}
+										src={`/glasses/${selectedGlasses}.png`}
 										selected={selected}
 										onMouseDown={onImageMouseDown}
 									/>
@@ -69,7 +69,7 @@ const Main: React.FC<{ stageRef: React.RefObject<Konva.Stage>; glasses: string[]
 						>
 							<img
 								className='w-full duration-75 hover:scale-95'
-								src={`/src/assets/glasses/${name.toLowerCase()}.png`}
+								src={`/glasses/${name.toLowerCase()}.png`}
 								alt={name}
 								title={name}
 							/>
