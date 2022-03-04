@@ -12,10 +12,10 @@ const Background: React.FC<{ src: string; containerRef: React.RefObject<HTMLDivE
 
 	function loadImage() {
 		const img = new window.Image();
-		img.src = src;
 		img.crossOrigin = 'Anonymous';
-		imageRef.current = img;
+		img.src = src;
 
+		imageRef.current = img;
 		imageRef.current.addEventListener('load', handleLoad);
 	}
 

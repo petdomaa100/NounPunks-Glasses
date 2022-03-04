@@ -35,7 +35,7 @@ img {
 	}
 
 	.btn {
-		@apply border-2 border-solid border-blackish rounded shadow-button uppercase duration-75;
+		@apply border-2 border-solid border-blackish rounded shadow-button uppercase duration-75 outline-none;
 	}
 
 	.btn:hover,

@@ -9,7 +9,7 @@ const App: React.FC = () => {
 	const [ address, setAddress ] = useState<string>('');
 	const [ loading, setLoading ] = useState<boolean>(false);
 	const [ glasses, setGlasses ] = useState<string[]>([]);
-	const [ tokenImageURLs, setTokenImageURLs ] = useState<string[]>([]);
+	const [ tokens, setTokens ] = useState<{ url: string; name: string; }[]>([]);
 
 	const stageRef = useRef<Konva.Stage>(null);
 
@@ -54,16 +54,15 @@ const App: React.FC = () => {
 			setLoading(true);
 
 
-			const tokens = await getNFTsOfAddress(address);
-			if (!tokens) return;
+			const response = await getNFTsOfAddress(address);
+			if (!response) return;
 
 
-			const nonNounPunksImages: string[] = [];
 			const glasses: string[] = [];
+			const tokens: { url: string; name: string; }[] = [];
 
-			for (const token of tokens) {
+			for (const token of response) {
 				const { contract, metadata, media } = token;
-				
 
 				if (contract.address === import.meta.env.VITE_NOUN_PUNKS_CONTRACT_ADDRESS) {
 					if (!metadata?.attributes) continue;
@@ -72,16 +71,14 @@ const App: React.FC = () => {
 
 					if (trait && !glasses.includes(trait.value)) glasses.push(trait.value);
 				} else {
-					if (!media?.length) continue;
-					
-					const image = (media[0] as any).gateway;
+					const image = media?.[0].gateway;
 
-					if (image) nonNounPunksImages.push(image);
+					if (image) tokens.push({ url: image, name: metadata?.name || '...' });
 				}
 			}
 
 
-			setTokenImageURLs(nonNounPunksImages);
+			setTokens(tokens);
 			setGlasses(glasses);
 			setLoading(false);
 		}
@@ -124,7 +121,7 @@ const App: React.FC = () => {
 					</svg>
 				</main>
 
-				: <Main stageRef={stageRef} glasses={glasses} tokenImageURLs={tokenImageURLs} />
+				: <Main stageRef={stageRef} glasses={glasses} tokens={tokens} />
 			}
 
 			<footer className='p-6 pt-0'>

@@ -7,7 +7,7 @@ import { Background, ImageObject, Image } from './';
 import type { KonvaEventObject } from 'konva/lib/Node';
 
 
-const Main: React.FC<{ stageRef: React.RefObject<Konva.Stage>; glasses: string[]; tokenImageURLs: string[]; }> = ({ glasses, tokenImageURLs, stageRef }) => {
+const Main: React.FC<{ stageRef: React.RefObject<Konva.Stage>; glasses: string[]; tokens: { url: string; name: string; }[]; }> = ({ glasses, tokens, stageRef }) => {
 	const [ selectedGlasses, setSelectedGlasses ] = useState<string | null>(null);
 	const [ selectedTokenImageURL, setSelectedTokenImageURL ] = useState<string | null>(null);
 	const [ selected, setSelected ] = useState<boolean>(true);
@@ -65,14 +65,10 @@ const Main: React.FC<{ stageRef: React.RefObject<Konva.Stage>; glasses: string[]
 						<li
 							className='cursor-pointer w-1/2'
 							key={name}
+							title={name}
 							onClick={() => setSelectedGlasses(name.toLowerCase())}
 						>
-							<img
-								className='w-full duration-75 hover:scale-95'
-								src={`/glasses/${name.toLowerCase()}.png`}
-								alt={name}
-								title={name}
-							/>
+							<img src={`/glasses/${name.toLowerCase()}.png`} alt={name} className='w-full duration-75 hover:scale-95' />
 						</li>
 					))}
 				</ul>
@@ -80,14 +76,15 @@ const Main: React.FC<{ stageRef: React.RefObject<Konva.Stage>; glasses: string[]
 
 			<div className='box p-6 overflow-auto'>
 				<ul className='flex flex-col items-center gap-4 h-full overflow-y-scroll overflow-x-hidden no-scrollbar'>
-					{tokenImageURLs.slice(1).map((url, i) => (
+					{tokens.slice(1).map(({ url, name }, i) => (
 						<li
-							className={!url.startsWith('https://ipfs.io') ? `pointer-events-none opacity-25` : 'cursor-pointer'}
+							className='w-full'
 							key={i}
+							title={name}
 							onClick={() => setSelectedTokenImageURL(url)}
 						>
 							<div className='rounded-md overflow-hidden'>
-								<Image imageURL={url} alt={`Your Token #${i + 1}`} style='w-full duration-75 hover:scale-105' />
+								<Image src={url} alt={`Your Token #${i + 1}`} className='w-full duration-75 cursor-pointer hover:scale-105' />
 							</div>
 						</li>
 					))}
